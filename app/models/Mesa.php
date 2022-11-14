@@ -1,24 +1,18 @@
 <?php
 
-class Usuario
+class Mesa
 {
     public $id;
-    public $usuario;
-    public $categoria;
-    public $codigo_pedido;
-    public $sueldo;
+    public $codigo_mesa;
+    public $estado;
 
 
-
-    public function crearUsuario()
+    public function crearMesa()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, categoria, codigo_pedido, sueldo) VALUES (:usuario, :categoria, :codigo_pedido, :sueldo)");
-        $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':categoria', $this->categoria, PDO::PARAM_STR);
-        $consulta->bindValue(':codigo_pedido', $this->codigo_pedido, PDO::PARAM_STR);
-        $consulta->bindValue(':sueldo', $this->sueldo, PDO::PARAM_INT);
-        
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO mesas (codigo_mesa, estado) VALUES (:codigo_mesa, :estado)");
+        $consulta->bindValue(':codigo_mesa', $this->codigo_mesa, PDO::PARAM_STR);
+        $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
         $consulta->execute();
         return $objAccesoDatos->obtenerUltimoId();
     }
@@ -26,20 +20,20 @@ class Usuario
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, categoria, codigo_pedido, sueldo FROM usuarios");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_mesa, estado FROM mesas");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
     }
 
-    public static function obtenerUsuario($usuario)
+    public static function obtenerMesa($mesa)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, categoria, codigo_pedido, sueldo FROM usuarios WHERE usuario = :usuario");
-        $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_mesa, estado FROM mesas WHERE codigo_mesa = :codigo_mesa");
+        $consulta->bindValue(':codigo_mesa', $mesa, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetchObject('Usuario');
+        return $consulta->fetchObject('Mesa');
     }
 
     public  function modificarUsuario()

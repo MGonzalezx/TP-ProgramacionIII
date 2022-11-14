@@ -25,37 +25,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Estructura de tabla para la tabla `productos`
 --
--- Usuario tiene que tener el numero de la comanda el cual va a estar en pendientes
 
-CREATE TABLE `usuarios` (
+CREATE TABLE `productos` (
   `id` int(11) NOT NULL,
-  `usuario` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `categoria` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `codigo_pedido` varchar(250) COLLATE utf8_unicode_ci NULL,
-  `sueldo` int(11) COLLATE utf8_unicode_ci NOT NULL
-
+  `nombre_producto` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `precio` int(11) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Volcado de datos para la tabla `usuarios`
+-- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `categoria`, `codigo_pedido`,`sueldo`) VALUES
-(1, 'franco', 'socio', NULL,15000),
-(2, 'fede', 'socio', NULL,15000),
-(3, 'ricardo', 'socio', NULL,15000);
-
+INSERT INTO `productos` (`id`, `nombre_producto`, `precio`) VALUES
+(1, 'milanesa', 500),
+(2, 'pizza', 750),
+(3, 'coca', 250);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `usuarios`
+-- Indices de la tabla `productos`
 --
-ALTER TABLE `usuarios`
+ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -63,15 +58,11 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `usuarios`
+-- AUTO_INCREMENT de la tabla `productos`
 --
-ALTER TABLE `usuarios`
+ALTER TABLE `productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
-
-/*ALTER TABLE `usuarios`
- ADD CONSTRAINT FK_PEDIDO FOREING KEY (`pendientes`) REFERENCES `pedidos`(`codigo_pedido`)
-COMMIT;*/
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

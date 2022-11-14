@@ -1,24 +1,27 @@
 <?php
 
-class Usuario
+class Pedido
 {
     public $id;
-    public $usuario;
-    public $categoria;
+    public $cliente;
+    public $nombre_producto;
     public $codigo_pedido;
-    public $sueldo;
+    public $codigo_mesa;
+    public $estado;
+    public $tiempo;
 
 
 
-    public function crearUsuario()
+    public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, categoria, codigo_pedido, sueldo) VALUES (:usuario, :categoria, :codigo_pedido, :sueldo)");
-        $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':categoria', $this->categoria, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (cliente, nombre_producto, codigo_pedido, codigo_mesa, estado, tiempo) VALUES (:cliente, :nombre_producto, :codigo_pedido, :codigo_mesa, :estado, :tiempo)");
+        $consulta->bindValue(':cliente', $this->cliente, PDO::PARAM_STR);
+        $consulta->bindValue(':nombre_producto', $this->nombre_producto, PDO::PARAM_STR);
         $consulta->bindValue(':codigo_pedido', $this->codigo_pedido, PDO::PARAM_STR);
-        $consulta->bindValue(':sueldo', $this->sueldo, PDO::PARAM_INT);
-        
+        $consulta->bindValue(':codigo_mesa', $this->codigo_mesa, PDO::PARAM_STR);
+        $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_STR);
         $consulta->execute();
         return $objAccesoDatos->obtenerUltimoId();
     }
@@ -26,20 +29,20 @@ class Usuario
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, categoria, codigo_pedido, sueldo FROM usuarios");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, cliente, nombre_producto, codigo_pedido, codigo_mesa, estado, tiempo FROM pedidos");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
-    public static function obtenerUsuario($usuario)
+    public static function obtenerPedido($pedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, categoria, codigo_pedido, sueldo FROM usuarios WHERE usuario = :usuario");
-        $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, cliente, nombre_producto, codigo_pedido, codigo_mesa, estado, tiempo FROM pedidos WHERE cliente = :cliente");
+        $consulta->bindValue(':cliente', $pedido, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetchObject('Usuario');
+        return $consulta->fetchObject('Pedido');
     }
 
     public  function modificarUsuario()
@@ -63,7 +66,8 @@ class Usuario
         $consulta->execute();
     }
 
-    public static function verificarDatos($usuario,$clave){
+    public static function verificarDatos($usuario, $clave)
+    {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("SELECT id, usuario, clave FROM usuarios WHERE usuario = :usuario");
         $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
@@ -71,13 +75,13 @@ class Usuario
         $retorno = " ";
         $userDataBase = $consulta->fetchObject('Usuario');
 
-        if($userDataBase->usuario === $usuario){
-            if(password_verify($clave,$userDataBase->clave)){
+        if ($userDataBase->usuario === $usuario) {
+            if (password_verify($clave, $userDataBase->clave)) {
                 $retorno = "Verificado";
-            }else{
+            } else {
                 $retorno = "Credenciales invalidas";
             }
-        }else{
+        } else {
             $retorno = "Usuario no existe";
         }
 

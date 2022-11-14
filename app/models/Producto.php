@@ -1,24 +1,18 @@
 <?php
 
-class Usuario
+class Producto
 {
     public $id;
-    public $usuario;
-    public $categoria;
-    public $codigo_pedido;
-    public $sueldo;
+    public $nombre_producto;
+    public $precio;
 
 
-
-    public function crearUsuario()
+    public function crearProducto()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, categoria, codigo_pedido, sueldo) VALUES (:usuario, :categoria, :codigo_pedido, :sueldo)");
-        $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':categoria', $this->categoria, PDO::PARAM_STR);
-        $consulta->bindValue(':codigo_pedido', $this->codigo_pedido, PDO::PARAM_STR);
-        $consulta->bindValue(':sueldo', $this->sueldo, PDO::PARAM_INT);
-        
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (nombre_producto, precio) VALUES (:nombre_producto, :precio)");
+        $consulta->bindValue(':nombre_producto', $this->nombre_producto, PDO::PARAM_STR);
+        $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
         $consulta->execute();
         return $objAccesoDatos->obtenerUltimoId();
     }
@@ -26,17 +20,17 @@ class Usuario
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, categoria, codigo_pedido, sueldo FROM usuarios");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre_producto, precio FROM productos");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
     }
 
-    public static function obtenerUsuario($usuario)
+    public static function obtenerProducto($producto)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, categoria, codigo_pedido, sueldo FROM usuarios WHERE usuario = :usuario");
-        $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre_producto, precio FROM productos WHERE nombre_producto = :nombre_producto");
+        $consulta->bindValue(':nombre_producto', $producto, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchObject('Usuario');

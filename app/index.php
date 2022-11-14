@@ -13,9 +13,14 @@ use Slim\Routing\RouteContext;
 require __DIR__ . '/../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
-// require_once './middlewares/Logger.php';
-
+require_once './middlewares/Logger.php';
+require_once './middlewares/Token.php';
+require_once './middlewares/AutentificadorJWT.php';
 require_once './controllers/UsuarioController.php';
+require_once './controllers/PedidoController.php';
+require_once './controllers/ProductoController.php';
+require_once './controllers/MesaController.php';
+
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -35,12 +40,52 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
+   /* $group->put('/{id}', \UsuarioController::class . ':ModificarUno');
+    $group->delete('/{usuarioId}', \UsuarioController::class . ':BorrarUno');
+    $group->post('/login', \UsuarioController::class . ':Login')->add(new TokenMiddleware())->add(new LoggerMiddleware());*/
+
   });
 
-$app->get('[/]', function (Request $request, Response $response) {    
-    $response->getBody()->write("Slim Framework 4 PHP");
-    return $response;
+  $app->group('/pedidos', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \PedidoController::class . ':TraerTodos');
+    $group->get('/{usuario}', \PedidoController::class . ':TraerUno');
+    $group->post('[/]', \PedidoController::class . ':CargarUno');
+   /* $group->put('/{id}', \UsuarioController::class . ':ModificarUno');
+    $group->delete('/{usuarioId}', \UsuarioController::class . ':BorrarUno');
+    $group->post('/login', \UsuarioController::class . ':Login')->add(new TokenMiddleware())->add(new LoggerMiddleware());*/
 
-});
+  });
+
+  $app->group('/productos', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \ProductoController::class . ':TraerTodos');
+    $group->get('/{usuario}', \ProductoController::class . ':TraerUno');
+    $group->post('[/]', \ProductoController::class . ':CargarUno');
+   /* $group->put('/{id}', \UsuarioController::class . ':ModificarUno');
+    $group->delete('/{usuarioId}', \UsuarioController::class . ':BorrarUno');
+    $group->post('/login', \UsuarioController::class . ':Login')->add(new TokenMiddleware())->add(new LoggerMiddleware());*/
+
+  });
+
+  $app->group('/mesas', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \MesaController::class . ':TraerTodos');
+    $group->get('/{usuario}', \MesaController::class . ':TraerUno');
+    $group->post('[/]', \MesaController::class . ':CargarUno');
+   /* $group->put('/{id}', \UsuarioController::class . ':ModificarUno');
+    $group->delete('/{usuarioId}', \UsuarioController::class . ':BorrarUno');
+    $group->post('/login', \UsuarioController::class . ':Login')->add(new TokenMiddleware())->add(new LoggerMiddleware());*/
+
+  });
+
+
+$app->get('[/]', function (Request $request, Response $response) {    
+  $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));
+    
+  // Pausa para probar el middleware (10 segundos)
+  sleep(10);
+  
+  $response->getBody()->write($payload);
+  return $response->withHeader('Content-Type', 'application/json');
+
+})->add(new LoggerMiddleware());
 
 $app->run();

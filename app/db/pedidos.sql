@@ -25,37 +25,34 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Estructura de tabla para la tabla `pedidos`
 --
--- Usuario tiene que tener el numero de la comanda el cual va a estar en pendientes
 
-CREATE TABLE `usuarios` (
+CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
-  `usuario` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `categoria` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `codigo_pedido` varchar(250) COLLATE utf8_unicode_ci NULL,
-  `sueldo` int(11) COLLATE utf8_unicode_ci NOT NULL
-
+  `cliente` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre_producto` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `codigo_pedido` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `codigo_mesa` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `estado` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `tiempo` varchar(250) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Volcado de datos para la tabla `usuarios`
+-- Volcado de datos para la tabla `pedidos`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `categoria`, `codigo_pedido`,`sueldo`) VALUES
-(1, 'franco', 'socio', NULL,15000),
-(2, 'fede', 'socio', NULL,15000),
-(3, 'ricardo', 'socio', NULL,15000);
-
+INSERT INTO `pedidos` (`id`, `cliente`,`nombre_producto`, `codigo_pedido`, `codigo_mesa`,`estado`,`tiempo`) VALUES
+(1, 'cristian','milanesa', '25AB25','AB25AB', 'en preparación','00:12:35');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `usuarios`
+-- Indices de la tabla `pedidos`
 --
-ALTER TABLE `usuarios`
+ALTER TABLE `pedidos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -63,14 +60,18 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `usuarios`
+-- AUTO_INCREMENT de la tabla `pedidos`
 --
-ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `pedidos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
-/*ALTER TABLE `usuarios`
- ADD CONSTRAINT FK_PEDIDO FOREING KEY (`pendientes`) REFERENCES `pedidos`(`codigo_pedido`)
+/*ALTER TABLE `pedidos`
+ ADD CONSTRAINT FK_PRODUCTO FOREING KEY (`nombre_producto`) REFERENCES `productos`(`nombre_producto`)
+COMMIT;
+
+ALTER TABLE `pedidos`
+ ADD CONSTRAINT FK_MESA FOREING KEY (`codigo_mesa`) REFERENCES `mesas`(`codigo_mesa`)
 COMMIT;*/
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

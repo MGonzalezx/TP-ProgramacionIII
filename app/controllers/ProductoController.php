@@ -1,27 +1,25 @@
 <?php
-require_once './models/Usuario.php';
+require_once './models/Producto.php';
 require_once './interfaces/IApiUsable.php';
 
-class UsuarioController extends Usuario implements IApiUsable
+class ProductoController extends Producto implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
 
-        $usuario = $parametros['usuario'];
-        $categoria = $parametros['categoria'];
-        $codigo_pedido = $parametros['pedido'];
-        $sueldo = $parametros['sueldo'];
+      
+
+        $nombre_producto = $parametros['nombre'];
+        $precio = $parametros['precio'];
 
         // Creamos el usuario
-        $usr = new Usuario();
-        $usr->usuario = $usuario;
-        $usr->categoria = $categoria;
-        $usr->codigo_pedido = $codigo_pedido;
-        $usr->sueldo = $sueldo;
-        $usr->crearUsuario();
+        $usr = new Producto();
+        $usr->nombre_producto = $nombre_producto;
+        $usr->precio = $precio;
+        $usr->crearProducto();
 
-        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
+        $payload = json_encode(array("mensaje" => "Producto creado con exito"));
 
         $response->getBody()->write($payload);
         return $response
@@ -31,8 +29,8 @@ class UsuarioController extends Usuario implements IApiUsable
     public function TraerUno($request, $response, $args)
     {
         // Buscamos usuario por nombre
-        $usr = $args['usuario'];
-        $usuario = Usuario::obtenerUsuario($usr);
+        $usr = $args['nombre'];
+        $usuario = Producto::obtenerProducto($usr);
         $payload = json_encode($usuario);
 
         $response->getBody()->write($payload);
@@ -42,7 +40,7 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Usuario::obtenerTodos();
+        $lista = Producto::obtenerTodos();
         $payload = json_encode(array("listaUsuario" => $lista));
 
         $response->getBody()->write($payload);
